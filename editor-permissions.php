@@ -13,6 +13,11 @@ multiple_editors::instance();
 
 class multiple_editors {
 
+	var $whitelist_roles = array( 
+			'contributor', 
+			'author'
+		);
+
 
 	static function instance() {
 		
@@ -35,13 +40,21 @@ class multiple_editors {
 		add_action( 'add_meta_boxes', array( $this, 'custom_editor_metabox_init' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
 
+		// Allow other plugins or themes add other roles
+		$this->whitelist_roles = apply_filters( 'custom_editors_enable_roles', $this->whitelist_roles );
+
 	}
 
 
 	function maybe_init_editor_caps() {
 
+		global $current_user;
+
+		// Check if the current user has a capability of having custom editor role applied
+		$maybe_custom_editor = array_intersect( $current_user->roles, $this->whitelist_roles );
+
 		// Filter caps only for logged-in users
-		if ( is_user_logged_in() )
+		if ( is_user_logged_in() && ! empty( $maybe_custom_editor ) )
 			add_filter( 'user_has_cap', array( $this, 'maybe_custom_editor_cap' ), 15, 3 );
 
 	}
@@ -89,7 +102,7 @@ class multiple_editors {
 
 				// Make sure we verify permissions for posts/pages with valid object ID.
 				// We pass null as object id when checking if user is a custom_editor.
-				if ( isset( $args[2] ) && is_numeric( $args[2] ) ) {
+				if ( $post_id ) {
 
 					// Edit all pages where the user is listed
 					$editors = (array) get_post_meta( $post_id, 'custom_editors', true );
@@ -114,7 +127,7 @@ class multiple_editors {
 	function custom_editor_metabox_init() {
 
 		// Check if current user is not a custom editor already
-		if ( ! current_user_can( 'edit_post', null ) )
+		if ( ! current_user_can( 'edit_private_pages' ) )
 			return;
 
 		$post_types = get_post_types();
@@ -137,11 +150,10 @@ class multiple_editors {
 	function custom_editor_metabox( $post ) {
 
 		$current_used_id = get_current_user_id();
-		$whitelist_roles = array( 'contributor', 'author' );
 		$editors = (array) get_post_meta( $post->ID, 'custom_editors', true );
 
 		$users = get_users( array( 
-				'roles' => $whitelist_roles,
+				'roles' => $this->whitelist_roles,
 				'fields' => array( 'ID', 'user_login', 'display_name' ),
 				'exclude' => array( $current_used_id )
 			) );
@@ -190,7 +202,7 @@ class multiple_editors {
 	function save_post( $post_id ) {
 
 		// Update custom editors only if current user is not a contributor already
-		if ( ! current_user_can( 'edit_post', null ) )
+		if ( ! current_user_can( 'edit_private_pages' ) )
 			return;
 
 		if ( isset( $_POST['custom_editors'] ) )
