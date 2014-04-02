@@ -1,10 +1,10 @@
 <?php
 /*
 	Plugin Name: Multiple Editors
-	Plugin URI: 
-	Description: Allow multiple editors and contributors per post or page.
-	Author: Metronet
-	Version: 0.1
+	Plugin URI: https://github.com/kasparsd/editor-permissions
+	Description: Allow multiple editors and contributors per post or page. It will also allow contributors and authors to upload files and add new pages.
+	Author: Metronet, Kaspars Dambis
+	Version: 0.1.1
 	Author URI: http://metronet.no
 */
 
@@ -13,6 +13,7 @@ multiple_editors::instance();
 
 class multiple_editors {
 
+	// A set of roles that can be granted the editor capability
 	var $whitelist_roles = array( 
 			'contributor', 
 			'author'
@@ -69,10 +70,10 @@ class multiple_editors {
 			return $all;
 
 		// Get the associated object ID that the user might be allowed to edit
-		if ( ! empty( $post ) ) 
-			$post_id = $post->ID;
-		elseif ( isset( $args[2] ) && is_numeric( $args[2] ) ) 
+		if ( isset( $args[2] ) && is_numeric( $args[2] ) ) 
 			$post_id = $args[2];
+		elseif ( ! empty( $post ) ) 
+			$post_id = $post->ID;
 		else
 			$post_id = null;
 
@@ -88,8 +89,7 @@ class multiple_editors {
 			case 'edit_posts':
 
 				// Allow adding new pages
-				if ( ! isset( $args[2] ) )
-					$all[ $caps[0] ] = true;
+				$all[ $caps[0] ] = true;
 
 				break;
 
@@ -100,8 +100,7 @@ class multiple_editors {
 			case 'edit_published_pages':
 			case 'edit_published_pages':
 
-				// Make sure we verify permissions for posts/pages with valid object ID.
-				// We pass null as object id when checking if user is a custom_editor.
+				// Make sure that we verify permissions for posts/pages with valid object ID.
 				if ( $post_id ) {
 
 					// Edit all pages where the user is listed
