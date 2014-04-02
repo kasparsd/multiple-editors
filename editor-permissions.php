@@ -4,7 +4,7 @@
 	Plugin URI: https://github.com/kasparsd/editor-permissions
 	Description: Allow multiple editors and contributors per post or page. It will also allow contributors and authors to upload files and add new pages.
 	Author: Metronet, Kaspars Dambis
-	Version: 0.1.1
+	Version: 0.1.2
 	Author URI: http://metronet.no
 */
 
@@ -153,7 +153,7 @@ class multiple_editors {
 		$users = array();
 
 		foreach ( $this->whitelist_roles as $user_role ) {
-			
+
 			// WP_User_Query doesn't support queries by multiple roles as they are stored
 			// as serialized strings in user meta table.
 			$users = array_merge( 
