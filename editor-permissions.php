@@ -150,12 +150,22 @@ class multiple_editors {
 
 		$current_used_id = get_current_user_id();
 		$editors = (array) get_post_meta( $post->ID, 'custom_editors', true );
+		$users = array();
 
-		$users = get_users( array( 
-				'roles' => $this->whitelist_roles,
-				'fields' => array( 'ID', 'user_login', 'display_name' ),
-				'exclude' => array( $current_used_id )
-			) );
+		foreach ( $this->whitelist_roles as $user_role ) {
+			
+			// WP_User_Query doesn't support queries by multiple roles as they are stored
+			// as serialized strings in user meta table.
+			$users = array_merge( 
+					$users, 
+					get_users( array( 
+						'role' => $user_role,
+						'fields' => array( 'ID', 'user_login', 'display_name' ),
+						'exclude' => array( $current_used_id )
+					) ) 
+				);
+
+		}
 
 		$users_html = array();
 
