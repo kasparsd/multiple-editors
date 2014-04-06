@@ -1,0 +1,43 @@
+# Copyright (C) 2014 Multiple Editors
+# This file is distributed under the same license as the Multiple Editors package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Multiple Editors 0.1.2\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/multiple-editors\n"
+"POT-Creation-Date: 2014-04-06 13:06:22+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: multiple-editors.php:147
+msgid "Contributors"
+msgstr ""
+
+#: multiple-editors.php:197
+msgid "All users already have the edit access."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Multiple Editors"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/kasparsd/editor-permissions"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Allow multiple editors and contributors per post or page. It will also allow "
+"contributors and authors to upload files and add new pages."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Metronet, Kaspars Dambis"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://metronet.no"
+msgstr ""
