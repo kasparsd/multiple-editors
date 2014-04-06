@@ -31,6 +31,10 @@ None, yet.
 
 ## Changelog
 
+### 0.1.2 (April 6, 2014)
+* Release on WP plugin repo.
+* Support i18n.
+
 ### 0.1 (April 2, 2014)
 * Initial release.
 
